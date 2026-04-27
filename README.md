@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Food Donation App
 
 This repository contains a simple food donation application with a Node.js backend and a React + Vite frontend.
@@ -67,3 +68,6 @@ npm run server
 ```
 
 - The frontend is located in the `frontend/` folder.
+=======
+# Restaurant-leftover-food-donation-system-
+>>>>>>> c20879c07bbb3c2cee4b2df4365052154cc6ced7
