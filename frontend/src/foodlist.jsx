@@ -23,25 +23,38 @@ function FoodList() {
         user: "Guest",
       });
       alert("Request sent successfully.");
-    } catch {
-      alert("Backend not connected.");
+    } catch (error) {
+      const message = error.response?.data?.error || "Backend not connected.";
+      alert(message);
     }
   };
 
   return (
-    <div className="box">
-      <h2>Available Food</h2>
+    <div className="foodlist-page">
+      <div className="foodlist-header">
+        <p className="dashboard-badge">Available Food</p>
+        <h1>Browse Donations</h1>
+        <p>Find available food donations from community members and place your request.</p>
+      </div>
+
       {foods.length === 0 ? (
-        <p>No food available yet.</p>
+        <div className="empty-state">
+          <p>No food available yet.</p>
+        </div>
       ) : (
-        foods.map((item, index) => (
-          <div key={item._id ?? index} className="item-row">
-            <span>
-              {item.food} - {item.qty}
-            </span>
-            <button onClick={() => requestFood(item)}>Request</button>
-          </div>
-        ))
+        <div className="foodlist-grid">
+          {foods.map((item, index) => (
+            <div key={item._id ?? index} className="foodlist-card">
+              <div className="foodlist-card-content">
+                <h3 className="foodlist-title">{item.food}</h3>
+                <p className="foodlist-qty">Quantity: {item.qty}</p>
+              </div>
+              <button className="button button-primary" onClick={() => requestFood(item)}>
+                Request This Food
+              </button>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );

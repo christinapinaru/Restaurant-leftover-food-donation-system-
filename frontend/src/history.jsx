@@ -13,19 +13,32 @@ function History() {
   }, []);
 
   return (
-    <div className="box">
-      <h2>Donation History</h2>
+    <div className="history-page">
+      <div className="history-header">
+        <p className="dashboard-badge">Donation History</p>
+        <h1>Past Donations</h1>
+        <p>View a complete log of all fulfilled donations and completed requests.</p>
+      </div>
+
       {history.length === 0 ? (
-        <p>No history yet.</p>
+        <div className="empty-state">
+          <p>No history yet.</p>
+        </div>
       ) : (
-        history.map((item, index) => (
-          <div key={item._id ?? index} className="item-row">
-            <div>
-              {item.food} - {item.qty}
+        <div className="history-grid">
+          {history.map((item, index) => (
+            <div key={item._id ?? index} className="history-card">
+              <div className="history-card-header">
+                <h3 className="history-title">{item.food}</h3>
+                <span className="history-status">Completed</span>
+              </div>
+              <div className="history-card-content">
+                <p className="history-qty">Quantity: {item.qty}</p>
+                <p className="history-date">{new Date(item.createdAt).toLocaleString()}</p>
+              </div>
             </div>
-            <div className="meta">{new Date(item.createdAt).toLocaleString()}</div>
-          </div>
-        ))
+          ))}
+        </div>
       )}
     </div>
   );
