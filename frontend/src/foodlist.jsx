@@ -1,4 +1,5 @@
 ﻿import React, { useEffect, useState } from "react";
+<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
 import api from "./api";
 
@@ -17,6 +18,14 @@ function FoodList() {
     const token = localStorage.getItem("token");
     if (!token) return;
 
+=======
+import api from "./api";
+
+function FoodList() {
+  const [foods, setFoods] = useState([]);
+
+  useEffect(() => {
+>>>>>>> c439b9e7cb41fdf391316882350cb1e24594abe9
     api.get("/all")
       .then((res) => setFoods(res.data))
       .catch(() => {
