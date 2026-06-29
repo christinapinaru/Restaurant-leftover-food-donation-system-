@@ -12,14 +12,11 @@ const User = require('./models/user');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-<<<<<<< HEAD
 const MONGO_URL = process.env.MONGO_URI || process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/fooddonation';
+const JWT_SECRET = process.env.JWT_SECRET || 'change-me';
 let dbReady = false;
-=======
-const MONGO_URL = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/fooddonation';
->>>>>>> c439b9e7cb41fdf391316882350cb1e24594abe9
 
-app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -28,35 +25,61 @@ const authenticateToken = (req, res, next) => {
   const token = authHeader && authHeader.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Access token required' });
 
-  jwt.verify(token, process.env.JWT_SECRET || 'secret', (err, user) => {
+  jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) return res.status(403).json({ error: 'Invalid token' });
     req.user = user;
     next();
   });
 };
+
 const fallbackFoods = [];
 const fallbackRequests = [];
 const fallbackHistory = [];
-<<<<<<< HEAD
 const fallbackUsers = [];
-=======
->>>>>>> c439b9e7cb41fdf391316882350cb1e24594abe9
 
-mongoose
-  .connect(MONGO_URL)
-  .then(() => {
+const connectToDatabase = async () => {
+  try {
+    await mongoose.connect(MONGO_URL, { serverSelectionTimeoutMS: 5000 });
     dbReady = true;
     console.log('MongoDB Connected');
-  })
-  .catch((error) => {
-    console.error('MongoDB connection failed:', error.message);
-    console.warn('Running with in-memory fallback storage.');
-  });
+  } catch (error) {
+    console.warn('MongoDB unavailable, using in-memory fallback storage:', error.message);
+  }
+};
+
+connectToDatabase();
+
+app.get('/health', async (req, res) => {
+  try {
+    const stateMap = {
+      0: 'disconnected',
+      1: 'connected',
+      2: 'connecting',
+      3: 'disconnecting',
+    };
+    const mongoState = stateMap[mongoose.connection.readyState] || 'unknown';
+    const foodCount = dbReady ? await Food.countDocuments() : fallbackFoods.length;
+    const requestCount = dbReady ? await Request.countDocuments() : fallbackRequests.length;
+    const historyCount = dbReady ? await History.countDocuments() : fallbackHistory.length;
+
+    return res.json({
+      status: 'ok',
+      dbReady,
+      mongoState,
+      foodCount,
+      requestCount,
+      historyCount,
+      backupStorage: !dbReady,
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Unable to check health.', details: error.message });
+  }
+});
 
 app.get('/all', async (req, res) => {
   try {
     if (dbReady) {
-      const foods = await Food.find({ status: 'available' }).sort({ createdAt: -1 });
+      const foods = await Food.find().sort({ createdAt: -1 });
       return res.json(foods);
     }
     return res.json(fallbackFoods);
@@ -66,7 +89,7 @@ app.get('/all', async (req, res) => {
 });
 
 app.post('/add', authenticateToken, async (req, res) => {
-  const { food, qty, location } = req.body;
+  const { food, qty } = req.body;
   if (!food || !qty) {
     return res.status(400).json({ error: 'Food name and quantity are required.' });
   }
@@ -75,7 +98,6 @@ app.post('/add', authenticateToken, async (req, res) => {
     const item = {
       food,
       qty,
-      location: location || '',
       status: 'available',
       createdAt: new Date(),
     };
@@ -157,7 +179,7 @@ app.post('/confirm', authenticateToken, async (req, res) => {
       return res.json({ request, history: historyData });
     }
 
-    const request = fallbackRequests.find((item) => item.id === id);
+    const request = fallbackRequests.find((item) => item._id === id || item.id === id);
     if (!request) {
       return res.status(404).json({ error: 'Request not found.' });
     }
@@ -187,33 +209,6 @@ app.get('/history', async (req, res) => {
   }
 });
 
-app.get('/health', async (req, res) => {
-  try {
-    const stateMap = {
-      0: 'disconnected',
-      1: 'connected',
-      2: 'connecting',
-      3: 'disconnecting',
-    };
-    const mongoState = stateMap[mongoose.connection.readyState] || 'unknown';
-    const foodCount = dbReady ? await Food.countDocuments() : fallbackFoods.length;
-    const requestCount = dbReady ? await Request.countDocuments() : fallbackRequests.length;
-    const historyCount = dbReady ? await History.countDocuments() : fallbackHistory.length;
-
-    return res.json({
-      status: 'ok',
-      dbReady,
-      mongoState,
-      foodCount,
-      requestCount,
-      historyCount,
-      backupStorage: !dbReady,
-    });
-  } catch (error) {
-    res.status(500).json({ error: 'Unable to check health.', details: error.message });
-  }
-});
-
 app.post('/register', async (req, res) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
@@ -221,7 +216,6 @@ app.post('/register', async (req, res) => {
   }
 
   try {
-<<<<<<< HEAD
     if (dbReady) {
       const existingUser = await User.findOne({ email });
       if (existingUser) {
@@ -243,20 +237,6 @@ app.post('/register', async (req, res) => {
 
     res.status(201).json({ message: 'User registered successfully.' });
   } catch (error) {
-    console.error('Registration error:', error.message);
-=======
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ error: 'User already exists.' });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ name, email, password: hashedPassword });
-    await user.save();
-
-    res.status(201).json({ message: 'User registered successfully.' });
-  } catch (error) {
->>>>>>> c439b9e7cb41fdf391316882350cb1e24594abe9
     res.status(500).json({ error: 'Registration failed.' });
   }
 });
@@ -268,7 +248,6 @@ app.post('/login', async (req, res) => {
   }
 
   try {
-<<<<<<< HEAD
     let user;
     if (dbReady) {
       user = await User.findOne({ email });
@@ -276,9 +255,6 @@ app.post('/login', async (req, res) => {
       user = fallbackUsers.find((item) => item.email === email);
     }
 
-=======
-    const user = await User.findOne({ email });
->>>>>>> c439b9e7cb41fdf391316882350cb1e24594abe9
     if (!user) {
       return res.status(400).json({ error: 'Invalid credentials.' });
     }
@@ -288,18 +264,15 @@ app.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'Invalid credentials.' });
     }
 
-<<<<<<< HEAD
-    const token = jwt.sign({ id: user._id || user.id, email: user.email }, process.env.JWT_SECRET || 'secret', { expiresIn: '1h' });
+    const token = jwt.sign({ id: user._id || user.id, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
     res.json({ token, user: { id: user._id || user.id, name: user.name, email: user.email } });
   } catch (error) {
-    console.error('Login error:', error.message);
-=======
-    const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET || 'secret', { expiresIn: '1h' });
-    res.json({ token, user: { id: user._id, name: user.name, email: user.email } });
-  } catch (error) {
->>>>>>> c439b9e7cb41fdf391316882350cb1e24594abe9
     res.status(500).json({ error: 'Login failed.' });
   }
+});
+
+app.get('/', (req, res) => {
+  res.json({ message: 'GoodPlate API is running.' });
 });
 
 app.listen(PORT, () => {

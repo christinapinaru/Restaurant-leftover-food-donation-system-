@@ -1,13 +1,8 @@
-<<<<<<< HEAD
 import React, { useEffect, useState } from "react";
-=======
-import React from "react";
->>>>>>> c439b9e7cb41fdf391316882350cb1e24594abe9
 import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
   const navigate = useNavigate();
-<<<<<<< HEAD
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -27,29 +22,19 @@ function Dashboard() {
     localStorage.removeItem("user");
     navigate("/");
   };
-=======
->>>>>>> c439b9e7cb41fdf391316882350cb1e24594abe9
 
   return (
     <div className="dashboard-page">
       <div className="dashboard-page-head">
         <div>
           <p className="dashboard-badge">GoodPlate Dashboard</p>
-<<<<<<< HEAD
           <h1>Welcome back, {user?.name || "organizer"}</h1>
-=======
-          <h1>Welcome back, organizer</h1>
->>>>>>> c439b9e7cb41fdf391316882350cb1e24594abe9
           <p>
             Manage donations, review incoming requests, and keep your community food flow efficient with one polished dashboard.
           </p>
         </div>
 
-<<<<<<< HEAD
         <button className="button button-ghost" onClick={handleLogout}>
-=======
-        <button className="button button-ghost" onClick={() => navigate("/")}>
->>>>>>> c439b9e7cb41fdf391316882350cb1e24594abe9
           Logout
         </button>
       </div>

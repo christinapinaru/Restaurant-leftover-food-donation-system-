@@ -1,5 +1,4 @@
 ﻿import React, { useEffect, useState } from "react";
-<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
 import api from "./api";
 
@@ -11,27 +10,15 @@ function History() {
     const token = localStorage.getItem("token");
     if (!token) {
       navigate("/");
+      return;
     }
-  }, [navigate]);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-
-=======
-import api from "./api";
-
-function History() {
-  const [history, setHistory] = useState([]);
-
-  useEffect(() => {
->>>>>>> c439b9e7cb41fdf391316882350cb1e24594abe9
     api.get("/history")
       .then((res) => setHistory(res.data))
       .catch(() => {
         setHistory([]);
       });
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="history-page">

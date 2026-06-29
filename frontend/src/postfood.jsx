@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ﻿import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "./api";
@@ -15,15 +14,6 @@ function PostFood() {
     }
   }, [navigate]);
 
-=======
-﻿import React, { useState } from "react";
-import api from "./api";
-
-function PostFood() {
-  const [food, setFood] = useState("");
-  const [qty, setQty] = useState("");
-
->>>>>>> c439b9e7cb41fdf391316882350cb1e24594abe9
   const submit = async () => {
     if (!food || !qty) {
       alert("Please add both food name and quantity.");

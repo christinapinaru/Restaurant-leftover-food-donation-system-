@@ -1,5 +1,4 @@
 ﻿import React, { useEffect, useState } from "react";
-<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
 import api from "./api";
 
@@ -11,37 +10,23 @@ function FoodList() {
     const token = localStorage.getItem("token");
     if (!token) {
       navigate("/");
+      return;
     }
-  }, [navigate]);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-
-=======
-import api from "./api";
-
-function FoodList() {
-  const [foods, setFoods] = useState([]);
-
-  useEffect(() => {
->>>>>>> c439b9e7cb41fdf391316882350cb1e24594abe9
     api.get("/all")
       .then((res) => setFoods(res.data))
       .catch(() => {
-        setFoods([
-          { food: "Rice", qty: "10 plates" },
-          { food: "Bread", qty: "5 packs" },
-        ]);
+        setFoods([]);
       });
-  }, []);
+  }, [navigate]);
 
   const requestFood = async (item) => {
+    const user = JSON.parse(localStorage.getItem("user") || "{}")
     try {
       await api.post("/request", {
         food: item.food,
         qty: item.qty,
-        user: "Guest",
+        user: user.name || "Guest",
       });
       alert("Request sent successfully.");
     } catch (error) {
