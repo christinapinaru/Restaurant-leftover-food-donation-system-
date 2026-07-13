@@ -2,10 +2,21 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+// =======================
+// Register User
+// =======================
+
 const registerUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
 
   try {
+    // Only donor and recipient can register
+    if (role !== "donor" && role !== "recipient") {
+      return res.status(400).json({
+        error: "Only Donor and Recipient can register",
+      });
+    }
+
     const oldUser = await User.findOne({ email });
 
     if (oldUser) {
@@ -20,11 +31,12 @@ const registerUser = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      role,
     });
 
     await user.save();
 
-    res.json({
+    res.status(201).json({
       message: "Registration successful",
     });
 
@@ -35,11 +47,16 @@ const registerUser = async (req, res) => {
   }
 };
 
+// =======================
+// Login User
+// =======================
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
+
+    // Find User
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -48,6 +65,7 @@ const loginUser = async (req, res) => {
       });
     }
 
+    // Check Password
     const checkPassword = await bcrypt.compare(
       password,
       user.password
@@ -59,11 +77,19 @@ const loginUser = async (req, res) => {
       });
     }
 
+    // Create JWT Token
     const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET
+      {
+        id: user._id,
+        role: user.role,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "7d",
+      }
     );
 
+    // Return User Info
     res.json({
       token,
 
@@ -71,6 +97,7 @@ const loginUser = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role,
       },
     });
 
@@ -80,7 +107,6 @@ const loginUser = async (req, res) => {
     });
   }
 };
-
 
 module.exports = {
   registerUser,
