@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+<<<<<<< HEAD
 const {
   createRequest,
   getMyRequests,
@@ -16,3 +17,19 @@ router.get("/", protect, authorize("admin"), getAllRequests);
 router.put("/:id/status", protect, updateRequestStatus);
 
 module.exports = router;
+=======
+
+const {
+  createRequest,
+  getRequests,
+  confirmRequest,
+  getHistory,
+} = require("../controllers/requestController");
+
+router.post("/request", createRequest);
+router.get("/requests", getRequests);
+router.post("/confirm", confirmRequest);
+router.get("/history", getHistory);
+
+module.exports = router;
+>>>>>>> bda4fdcc6fc70b8868d041251866274e892445e0

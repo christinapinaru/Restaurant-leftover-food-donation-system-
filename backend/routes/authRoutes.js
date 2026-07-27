@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   registerUser,
   loginUser,
+<<<<<<< HEAD
   getMe,
   updateMe,
   getAllUsers,
@@ -25,3 +26,11 @@ router.put("/users/:id/status", protect, authorize("admin"), setUserStatus);
 router.delete("/users/:id", protect, authorize("admin"), deleteUser);
 
 module.exports = router;
+=======
+} = require("../controllers/authController");
+
+router.post("/register", registerUser);
+router.post("/login", loginUser);
+
+module.exports = router;
+>>>>>>> bda4fdcc6fc70b8868d041251866274e892445e0

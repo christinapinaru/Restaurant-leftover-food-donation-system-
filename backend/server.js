@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
@@ -35,3 +36,32 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+=======
+require("dotenv").config();
+
+const express = require("express");
+const cors = require("cors");
+
+const connectDB = require("./config/db");
+
+const authRoutes = require("./routes/authRoutes");
+const foodRoutes = require("./routes/foodRoutes");
+const requestRoutes = require("./routes/requestRoutes");
+
+const app = express();
+
+connectDB();
+
+app.use(cors());
+app.use(express.json());
+
+app.use("/", authRoutes);
+app.use("/", foodRoutes);
+app.use("/", requestRoutes);
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+>>>>>>> bda4fdcc6fc70b8868d041251866274e892445e0
