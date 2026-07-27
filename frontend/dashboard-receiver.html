@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Receiver Dashboard — GoodPlate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="src/css/style.css" />
+</head>
+<body>
+<div class="app-shell">
+  <div class="topbar" id="topbar"></div>
+
+  <div class="container">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="browse">Browse Available Food</button>
+      <button class="tab-btn" data-tab="mine">My Requests</button>
+    </div>
+
+    <div id="browseTab">
+      <div class="section-head">
+        <h2>Available near you</h2>
+        <button class="btn btn-outline" id="refreshBrowseBtn">Refresh</button>
+      </div>
+      <div class="ticket-grid" id="browseGrid"></div>
+    </div>
+
+    <div id="mineTab" style="display:none;">
+      <div class="section-head">
+        <h2>Your requests</h2>
+      </div>
+      <div class="ticket-grid" id="mineGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Request Modal -->
+<div class="modal-backdrop" id="requestModal">
+  <div class="modal">
+    <button class="modal-close" id="closeRequestModal">&times;</button>
+    <h2>Request this food</h2>
+    <div id="requestErrorBox" class="error-msg" style="display:none;"></div>
+    <form id="requestForm">
+      <input type="hidden" id="requestFoodId" />
+      <div class="field">
+        <label for="requestMessage">Message to restaurant (optional)</label>
+        <textarea id="requestMessage" rows="3" placeholder="e.g. We can pick up within the hour"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Send Request</button>
+    </form>
+  </div>
+</div>
+
+<script src="src/js/api.js"></script>
+<script src="src/js/utils.js"></script>
+<script src="src/js/dashboard-receiver.js"></script>
+<script>initReceiverDashboard();</script>
+</body>
+</html>

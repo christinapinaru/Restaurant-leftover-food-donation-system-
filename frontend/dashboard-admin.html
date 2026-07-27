@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin Dashboard — GoodPlate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="src/css/style.css" />
+</head>
+<body>
+<div class="app-shell">
+  <div class="topbar" id="topbar"></div>
+
+  <div class="container">
+    <div class="stats-row" id="statsRow"></div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="users">Users</button>
+      <button class="tab-btn" data-tab="food">Food Listings</button>
+      <button class="tab-btn" data-tab="requests">Requests</button>
+    </div>
+
+    <div id="usersTab">
+      <div class="section-head">
+        <h2>All users</h2>
+        <span class="count" id="usersCount"></span>
+      </div>
+      <table id="usersTable">
+        <thead>
+          <tr><th>Name</th><th>Email</th><th>Role</th><th>Org</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+        <tbody id="usersBody"></tbody>
+      </table>
+    </div>
+
+    <div id="foodTab" style="display:none;">
+      <div class="section-head">
+        <h2>All food listings</h2>
+        <span class="count" id="foodCount"></span>
+      </div>
+      <div class="ticket-grid" id="foodGrid"></div>
+    </div>
+
+    <div id="requestsTab" style="display:none;">
+      <div class="section-head">
+        <h2>All requests</h2>
+        <span class="count" id="requestsCount"></span>
+      </div>
+      <table id="requestsTable">
+        <thead>
+          <tr><th>Food</th><th>Restaurant</th><th>Receiver</th><th>Status</th><th>Date</th></tr>
+        </thead>
+        <tbody id="requestsBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="src/js/api.js"></script>
+<script src="src/js/utils.js"></script>
+<script src="src/js/dashboard-admin.js"></script>
+<script>initAdminDashboard();</script>
+</body>
+</html>

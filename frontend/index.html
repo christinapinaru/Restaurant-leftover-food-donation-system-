@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GoodPlate — Restaurant Leftover Food Donation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="src/css/style.css" />
+</head>
+<body>
+<div class="auth-wrap">
+  <div class="auth-card" style="max-width:520px; text-align:center;">
+    <p class="eyebrow">🍲 Good food, going somewhere good</p>
+    <h1>🍽️ GoodPlate</h1>
+    <p class="sub">
+      Connecting restaurants with unsold, still-good food to NGOs and
+      receivers who can put it to great use — before it goes to waste.
+    </p>
+    <div style="display:flex; gap:10px; justify-content:center; margin-top:10px;">
+      <a class="btn btn-primary" href="login.html">Log in</a>
+      <a class="btn btn-outline" href="register.html">Create account</a>
+    </div>
+  </div>
+</div>
+<script>
+  // If already logged in, skip straight to the right dashboard.
+  const token = localStorage.getItem("rlf_token");
+  const rawUser = localStorage.getItem("rlf_user");
+  if (token && rawUser) {
+    const user = JSON.parse(rawUser);
+    const dest =
+      user.role === "admin" ? "dashboard-admin.html" :
+      user.role === "restaurant" ? "dashboard-restaurant.html" :
+      "dashboard-receiver.html";
+    window.location.href = dest;
+  }
+</script>
+</body>
+</html>

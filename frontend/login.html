@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Log in — GoodPlate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="src/css/style.css" />
+</head>
+<body>
+<div class="auth-wrap">
+  <div class="auth-card">
+    <p class="eyebrow">GoodPlate</p>
+    <h1>Welcome back</h1>
+    <p class="sub">Log in to manage listings, requests, or the platform.</p>
+
+    <div id="errorBox" class="error-msg" style="display:none;"></div>
+
+    <form id="loginForm">
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" required placeholder="you@example.com" />
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" required placeholder="••••••••" />
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Log in</button>
+    </form>
+
+    <p class="auth-foot">
+      Don't have an account? <a href="register.html">Create one</a>
+    </p>
+  </div>
+</div>
+
+<script src="src/js/api.js"></script>
+<script src="src/js/utils.js"></script>
+<script src="src/js/auth.js"></script>
+<script>initLoginPage();</script>
+</body>
+</html>

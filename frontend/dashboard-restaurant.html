@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Restaurant Dashboard — GoodPlate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="src/css/style.css" />
+</head>
+<body>
+<div class="app-shell">
+  <div class="topbar" id="topbar"></div>
+
+  <div class="container">
+    <div class="stats-row" id="statsRow"></div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="listings">My Listings</button>
+      <button class="tab-btn" data-tab="requests">Incoming Requests</button>
+    </div>
+
+    <div id="listingsTab">
+      <div class="section-head">
+        <h2>Your food listings</h2>
+        <button class="btn btn-primary" id="newListingBtn">+ New Listing</button>
+      </div>
+      <div class="ticket-grid" id="listingsGrid"></div>
+    </div>
+
+    <div id="requestsTab" style="display:none;">
+      <div class="section-head">
+        <h2>Requests from receivers</h2>
+      </div>
+      <div class="ticket-grid" id="requestsGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- New / Edit Listing Modal -->
+<div class="modal-backdrop" id="listingModal">
+  <div class="modal">
+    <button class="modal-close" id="closeListingModal">&times;</button>
+    <h2 id="listingModalTitle">New Food Listing</h2>
+    <div id="listingErrorBox" class="error-msg" style="display:none;"></div>
+    <form id="listingForm">
+      <input type="hidden" id="foodId" />
+      <div class="field">
+        <label for="foodName">Food Name</label>
+        <input type="text" id="foodName" required placeholder="e.g. Rice & Curry" />
+      </div>
+      <div class="field">
+        <label for="description">Description</label>
+        <textarea id="description" rows="2" placeholder="Any details receivers should know"></textarea>
+      </div>
+      <div style="display:flex; gap:10px;">
+        <div class="field" style="flex:1;">
+          <label for="quantity">Quantity</label>
+          <input type="number" id="quantity" min="1" required placeholder="20" />
+        </div>
+        <div class="field" style="flex:1;">
+          <label for="unit">Unit</label>
+          <select id="unit">
+            <option value="plates">plates</option>
+            <option value="kg">kg</option>
+            <option value="packets">packets</option>
+            <option value="liters">liters</option>
+            <option value="boxes">boxes</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label for="foodType">Food Type</label>
+        <select id="foodType">
+          <option value="veg">Veg</option>
+          <option value="non-veg">Non-Veg</option>
+          <option value="mixed">Mixed</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="pickupAddress">Pickup Address</label>
+        <input type="text" id="pickupAddress" required placeholder="Area, City" />
+      </div>
+      <div class="field">
+        <label for="expiryTime">Best-before / Pickup-by</label>
+        <input type="datetime-local" id="expiryTime" required />
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Save Listing</button>
+    </form>
+  </div>
+</div>
+
+<script src="src/js/api.js"></script>
+<script src="src/js/utils.js"></script>
+<script src="src/js/dashboard-restaurant.js"></script>
+<script>initRestaurantDashboard();</script>
+</body>
+</html>
