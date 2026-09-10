@@ -1,5 +1,12 @@
 <<<<<<< HEAD
-# GoodPlate — Restaurant Leftover Food Donation System
+🍽️ GoodPlate — Food Donation Platform
+A full-stack web platform connecting food donors directly with community members in need.
+
+Tech Stack: React, Node.js, Express.js, MongoDB, JWT
+Key Features:
+User authentication with role-based access
+Food donation posting and interactive request workflow
+Complete donation and request history tracking
 
 A full-stack app connecting **restaurants** with surplus food to **NGOs / receivers**,
 with an **admin** role to oversee the whole platform.
